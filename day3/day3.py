@@ -23,9 +23,8 @@ for xy in range(1,y_max):
         trees_3 += 1
     if map[((xy * 7) % x_max,xy)] == '#':
         trees_4 += 1
-    if xy % 2 == 0:
-        if map[((xy/2) % x_max,xy)] == '#':
-            trees_5 += 1
+    if xy % 2 == 0 and map[((xy/2) % x_max,xy)] == '#':
+        trees_5 += 1
 
 print("Solution 1: ", trees_2)
 
