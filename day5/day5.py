@@ -1,3 +1,4 @@
+import timing
 import os
 import sys
 
