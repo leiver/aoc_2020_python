@@ -40,6 +40,8 @@ for end_range_index in range(1, len(numbers_parsed)):
         list_of_numbers = numbers_parsed[start_range_index:end_range_index+1]
         smallest_number = min(list_of_numbers)
         largest_number = max(list_of_numbers)
-        print("Solution part2: " + str(smallest_number + largest_number))
+        result = smallest_number + largest_number
         break
     current_sum = new_sum
+
+print("Solution part2: " + str(result))
