@@ -16,7 +16,6 @@ def day12():
         for line in file:
             command = line[0]
             amount = int(line.rstrip()[1:])
-            #print(line)
             commands.append((command, amount))
             if command == "R":
                 part1_direction = int((part1_direction + (amount / 90)) % 4)
@@ -50,9 +49,6 @@ def day12():
 
                 waypoint_x += direction_x[directions[command]] * amount
                 waypoint_y += direction_y[directions[command]] * amount
-            #print("waypoint x,y = " + str(waypoint_x) + "," + str(waypoint_y))
-            #print("boat x,y = " + str(boat_x) + "," + str(boat_y))
-            #input()
 
     print("Solution part1: " + str(abs(part1_x) + abs(part1_y)))
 
