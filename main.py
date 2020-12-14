@@ -1,4 +1,4 @@
 import tools.timing
-import day13.day13
+import day14.day14
 
-day13.day13.day13()
+day14.day14.day14()
