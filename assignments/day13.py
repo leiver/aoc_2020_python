@@ -13,7 +13,7 @@ def day13():
     bus_schedules = []
     bus_ids = []
     bus_indexes = {}
-    with open(os.path.join(sys.path[0], "day13/input_day13.txt"), "r") as file:
+    with open(os.path.join(sys.path[0], "inputs/input_day13.txt"), "r") as file:
         lines = file.readlines()
         earliest_timestamp = int(lines[0].rstrip())
         closest_schedule = 0
@@ -35,7 +35,7 @@ def day13():
 
     print("Solution part1: " + str(closest_schedule * smallest_waiting_time))
 
-    timing.log("Part 1 is finished!")
+    timing.log("Part 1 finished!")
 
     bus_ids.sort(reverse=True)
 

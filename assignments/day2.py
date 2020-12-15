@@ -1,9 +1,18 @@
-import timing
+from tools import timing
 import os
 import sys
 
+
+def day2():
+    part1()
+
+    timing.log("Part 1 finished!")
+
+    part2()
+
+
 def part1():
-    file = open(os.path.join(sys.path[0], "input_day2.txt"), "r")
+    file = open(os.path.join(sys.path[0], "inputs/input_day2.txt"), "r")
 
     valid_passwords = 0
 
@@ -15,13 +24,14 @@ def part1():
         password = split_line[2]
 
         occurrences = password.count(character)
-        if(occurrences >= int(bounds[0]) and occurrences <= int(bounds[1])):
-            valid_passwords+=1
+        if int(bounds[0]) <= occurrences <= int(bounds[1]):
+            valid_passwords += 1
 
     print(valid_passwords)
 
+
 def part2():
-    file = open(os.path.join(sys.path[0], "input_day2.txt"), "r")
+    file = open(os.path.join(sys.path[0], "inputs/input_day2.txt"), "r")
 
     valid_passwords = 0
 
@@ -35,15 +45,8 @@ def part2():
         first_position = password[int(bounds[0]) - 1]
         second_position = password[int(bounds[1]) - 1]
 
-        if (first_position == character and second_position != character) or (first_position != character and second_position == character):
-            valid_passwords+=1
+        if (first_position == character and second_position != character) or (
+                first_position != character and second_position == character):
+            valid_passwords += 1
 
     print(valid_passwords)
-
-part1()
-
-timing.log("part 1 done")
-
-part2()
-
-timing.log("part 2 done")

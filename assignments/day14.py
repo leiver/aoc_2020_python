@@ -46,7 +46,7 @@ def day14():
     memory = {}
     memory_part_2 = {}
     mask = ""
-    with open(os.path.join(sys.path[0], "day14/input_day14.txt"), "r") as file:
+    with open(os.path.join(sys.path[0], "inputs/input_day14.txt"), "r") as file:
         for line in file:
             (command, value) = line.rstrip().split(" = ")
             if command == "mask":

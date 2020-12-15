@@ -1,6 +1,7 @@
-import tools.timing
+from tools import timing
 import os
 import sys
+
 
 def day12():
     commands = []
@@ -12,7 +13,7 @@ def day12():
     boat_x = boat_y = 0
     waypoint_x = 10
     waypoint_y = -1
-    with open(os.path.join(sys.path[0], "day12/input_day12.txt"), "r") as file:
+    with open(os.path.join(sys.path[0], "inputs/input_day12.txt"), "r") as file:
         for line in file:
             command = line[0]
             amount = int(line.rstrip()[1:])

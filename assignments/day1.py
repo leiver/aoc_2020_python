@@ -1,9 +1,18 @@
-import timing
+from tools import timing
 import os
 import sys
 
+
+def day1():
+    part1()
+
+    timing.log("Part 1 finished!")
+
+    part2()
+
+
 def part1():
-    file = open(os.path.join(sys.path[0], "input_day1.txt"), "r")
+    file = open(os.path.join(sys.path[0], "inputs/input_day1.txt"), "r")
 
     numbers = []
 
@@ -15,11 +24,12 @@ def part1():
         if number not in numbers:
             numbers.append(number)
 
+
 def part2():
-    file = open(os.path.join(sys.path[0], "input_day1.txt"), "r")
+    file = open(os.path.join(sys.path[0], "inputs/input_day1.txt"), "r")
 
     numbers = []
-    sums={}
+    sums = {}
     for line in file:
         number = int(line)
         if 2020 - number in sums.keys():
@@ -36,11 +46,3 @@ def part2():
                 sums[sum] = number
 
         numbers.append(number)
-
-part1()
-
-timing.log("part 1 done")
-
-part2()
-
-timing.log("part 2 done")
