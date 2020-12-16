@@ -47,10 +47,8 @@ def day16():
             for field_name in rule_map.keys():
                 valid_for_field = False
                 for (lower_end, upper_end) in rule_map[field_name]:
-                    #print(field_name, " = ", lower_end, ", ", upper_end, ": ", ticket_value)
                     if lower_end <= ticket_value <= upper_end:
                         valid_for_field = True
-                #print("    ", valid_for_field)
                 if valid_for_field and (field_name not in not_valid_index_for_rule or ticket_index not in not_valid_index_for_rule[field_name]):
                     if field_name in valid_index_for_rule:
                         valid_index_for_rule[field_name].add(ticket_index)
@@ -63,17 +61,25 @@ def day16():
                         not_valid_index_for_rule[field_name].add(ticket_index)
                     else:
                         not_valid_index_for_rule[field_name] = {ticket_index}
-                #print(valid_index_for_rule)
-                #print(not_valid_index_for_rule)
 
+    valid_index_for_rule_sorted_list = list(valid_index_for_rule.items())
+    valid_index_for_rule_sorted_list.sort(key=sorting)
 
-    print(valid_index_for_rule)
-    print()
-    print(not_valid_index_for_rule)
+    departure_fields = []
     solution_part_2 = 1
-    for field_name in valid_index_for_rule.keys():
-        if field_name.startswith("departure"):
-            field_index = valid_index_for_rule[field_name]
-            solution_part_2 *= my_ticket[field_index]
+    known_indexes = []
+    while len(departure_fields) < 6:
+        for (field_name, indexes) in valid_index_for_rule_sorted_list:
+            filtered_indexes = [index for index in indexes if index not in known_indexes]
+            if len(filtered_indexes) == 1:
+                known_indexes.append(filtered_indexes[0])
+                if field_name.startswith("departure"):
+                    departure_fields.append(filtered_indexes[0])
+                    solution_part_2 *= my_ticket[filtered_indexes[0]]
 
     print("Solution part2: ", solution_part_2)
+
+
+def sorting(item):
+    (_, list_to_length) = item
+    return len(list_to_length)
