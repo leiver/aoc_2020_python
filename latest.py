@@ -1,3 +1,3 @@
-from assignments import day17
+from assignments import day18
 
-day17.day17()
+day18.day18()
