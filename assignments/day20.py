@@ -33,7 +33,9 @@ class Picture:
     def direction_that_matches(self, border_to_match):
         for i in range(4):
             if border_to_match in self.borders[i]:
+                print("\tfound match in image", self.picture_id, "for border", border_to_match, "in direction", self.directions_other_way[i])
                 return self.directions_other_way[i]
+        return None
 
     def transmute_to_match(self, direction, border_to_match):
         matched_direction = self.direction_that_matches(border_to_match)
@@ -41,14 +43,19 @@ class Picture:
             matched_border = self.border_from_direction(matched_direction)
             if matched_border[0] == border_to_match:
                 if matched_direction in ["N", "S"]:
+                    print("   flipping", self.picture_id, "in the x axis")
                     self.flip_x()
                 else:
+                    print("   flipping", self.picture_id, "in the y axis")
                     self.flip_y()
             self.rotate((self.directions[matched_direction] + 4 - self.directions[direction]) % 4)
             return True
         return False
 
     def rotate(self, times_with_clock):
+        if times_with_clock % 4 == 0:
+            return
+        print("   rotating", self.picture_id, times_with_clock, "times with the clock")
         copy_of_borders = copy.deepcopy(self.borders)
         for i in range(4):
             self.borders[(i + times_with_clock) % 4] = copy_of_borders[i]
@@ -63,11 +70,6 @@ class Picture:
                 if times_with_clock == 1:
                     pixel_row.append(self.pixels[x * -1][y])
                 if times_with_clock == 2:
-                    print(len(self.pixels))
-                    print(len(self.pixels[0]))
-                    print(y)
-                    print(x)
-                    print()
                     pixel_row.append(self.pixels[y * -1][x * -1])
                 if times_with_clock == 3:
                     pixel_row.append(self.pixels[x][y * -1])
@@ -82,6 +84,7 @@ class Picture:
         self.east_border = self.borders[1]
         self.south_border = self.borders[0]
         self.west_border = self.borders[3]
+        self.pixels = self.pixels[::-1]
 
     def flip_x(self):
         for i in range(4):
@@ -91,6 +94,13 @@ class Picture:
         self.east_border = self.borders[3]
         self.south_border = self.borders[2]
         self.west_border = self.borders[1]
+        self.pixels = [pixel_row[::-1] for pixel_row in self.pixels]
+
+    def __repr__(self):
+        return f"Picture:\n\tPicture_id: {self.picture_id}\n\tnorth_border: {self.north_border}\n\teast_border: {self.east_border}\n\tsouth_border: {self.south_border}\n\twest_border: {self.west_border}\n"
+
+    def __str__(self):
+        return "member of Test"
 
 
 def parse_binary_from_border(border):
@@ -116,7 +126,7 @@ def day20():
     image_borders = {}
     images_from_border = {}
     images_from_reverse_border = {}
-    with open(os.path.join(sys.path[0], "inputs/input_day20.txt"), "r") as file:
+    with open(os.path.join(sys.path[0], "inputs/tests/test_day20.txt"), "r") as file:
         for image in file.read().rstrip().split("\n\n"):
             image_lines = image.rstrip().split("\n")
             image_id = int(image_lines[0][5:].strip(":"))
@@ -173,8 +183,11 @@ def day20():
     direction_y = {"N": -1, "E": 0, "S": 1, "W": 0}
     opposite_direction = {"N": "S", "E": "W", "S": "N", "W": "E"}
 
+    print(images)
+
     open_borders = {}
     full_image = {}
+    full_picture_length = int(math.sqrt(len(images)))
     for (image_id, picture) in images.items():
         borders_matched = []
         for i in range(4):
@@ -191,34 +204,34 @@ def day20():
             }
             full_image = {(0, 0): picture}
             break
+    print("starting_piece =", picture.picture_id)
 
     while len(full_image) != total_amount_of_images:
         for (border_id, border) in open_borders.items():
             (x, y, direction) = border_id
-            image_for_border = full_image[(x, y)].picture_id
-            matched_image = 0
-            if border[0] in images_from_reverse_border:
-                matched_image = images_from_reverse_border[border[0]][0]
-            elif len(images_from_border[border[0]]) == 2:
-                matched_image = [matched_image for matched_image in images_from_border[border[0]] if matched_image != image_for_border]
-                matched_image = matched_image[0]
-
-            if matched_image:
-                matched_image = images[matched_image]
-                matched_image.transmute_to_match(direction, border[0])
-                matched_image_x = x + direction_x[direction]
-                matched_image_y = y + direction_y[direction]
-                full_image[(matched_image_x, matched_image_y)] = matched_image
-                break
+            image_to_match_border_x = x + direction_x[direction]
+            image_to_match_border_y = y + direction_y[direction]
+            if 0 <= image_to_match_border_x < full_picture_length and 0 <= image_to_match_border_y < full_picture_length:
+                for image_to_match in images.values():
+                    if image_to_match not in full_image.values():
+                        if image_to_match.transmute_to_match(direction, border[0]):
+                            print("added image", image_to_match.picture_id, "to position", (image_to_match_border_x, image_to_match_border_y))
+                            full_image[(image_to_match_border_x, image_to_match_border_y)] = image_to_match
+                            break
+                        #else:
+                            #print("image", image_to_match.picture_id, "did not match border", border[0])
         for direction in directions.keys():
-            opposing_border = (matched_image_x + direction_x[direction], matched_image_y + direction_y[direction], opposite_direction[direction])
+            opposing_border_x = image_to_match_border_x + direction_x[direction]
+            opposing_border_y = image_to_match_border_y + direction_y[direction]
+            if
+            opposing_border = (opposing_border_x, opposing_border_y, opposite_direction[direction])
             if opposing_border in open_borders:
                 del open_borders[opposing_border]
             else:
-                open_borders[(matched_image_x, matched_image_y, direction)] = matched_image.border_from_direction(direction)
+                open_borders[(image_to_match_border_x, image_to_match_border_y, direction)] = image_to_match.border_from_direction(direction)
 
-    full_picture_length = int(math.sqrt(len(full_image)))
+    print(full_image.keys())
 
-    solution_part1 = full_image[(0, 0)] * full_image[0, full_picture_length-1] * full_image[full_picture_length-1, 0] * full_image[full_picture_length-1, full_picture_length-1]
+    solution_part1 = full_image[(0, 0)].picture_id * full_image[(0, full_picture_length-1)].picture_id * full_image[(full_picture_length-1, 0)].picture_id * full_image[(full_picture_length-1, full_picture_length-1)].picture_id
 
     print("Solution part1: ", solution_part1)
