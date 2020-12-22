@@ -18,6 +18,8 @@ from assignments import day16
 from assignments import day17
 from assignments import day18
 from assignments import day19
+from assignments import day20
+from assignments import day21
 
 day1.day1()
 
@@ -110,3 +112,13 @@ timing.log("Day 18 finished!")
 timing.log("Starting day 19!")
 
 day19.day19()
+
+timing.log("Day 19 finished!")
+timing.log("Starting day 20!")
+
+day20.day20()
+
+timing.log("Day 20 finished!")
+timing.log("Starting day 21!")
+
+day21.day21()
