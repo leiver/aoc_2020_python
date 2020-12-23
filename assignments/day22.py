@@ -67,17 +67,12 @@ def play_regular_game(player_1_deck, player_2_deck):
 
 def day22():
     with open(os.path.join(sys.path[0], "inputs/input_day22.txt"), "r") as file:
-        (player_1_deck, player_2_deck) = file.read().rstrip().split("\n\n")
-        initial_deck_player_1 = deque([int(card) for card in player_1_deck.rstrip().split("\n")[1:]])
-        initial_deck_player_2 = deque([int(card) for card in player_2_deck.rstrip().split("\n")[1:]])
+        (initial_deck_player_1, initial_deck_player_2) = file.read().rstrip().split("\n\n")
+        initial_deck_player_1 = deque([int(card) for card in initial_deck_player_1.rstrip().split("\n")[1:]])
+        initial_deck_player_2 = deque([int(card) for card in initial_deck_player_2.rstrip().split("\n")[1:]])
 
-    winning_deck = play_regular_game(initial_deck_player_1.copy(), initial_deck_player_2.copy())
+    print("Solution part1:", calculate_score(play_regular_game(initial_deck_player_1.copy(), initial_deck_player_2.copy())))
 
-    print("Solution part1:", calculate_score(winning_deck))
+    timing.log("Part 1 finished!")
 
-    player_1_deck = initial_deck_player_1.copy()
-    player_2_deck = initial_deck_player_2.copy()
-
-    (_, winning_deck) = play_recursive_game(player_1_deck, player_2_deck)
-
-    print("Solution part2:", calculate_score(winning_deck))
+    print("Solution part2:", calculate_score(play_recursive_game(initial_deck_player_1.copy(), initial_deck_player_2.copy())[1]))
