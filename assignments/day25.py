@@ -15,8 +15,10 @@ def day25():
         result *= subject_number
         result = result % 20201227
         loop_count += 1
+    print(loop_count)
 
-    encryption_key = door_public_key
+    subject_number = door_public_key
+    encryption_key = 1
     for _ in range(loop_count):
         encryption_key *= subject_number
         encryption_key = encryption_key % 20201227
